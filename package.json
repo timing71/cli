@@ -10,7 +10,7 @@
   "type": "module",
   "homepage": "https://www.timing71.org/",
   "bin": {
-    "t71": "src/index.js"
+    "timing71": "src/index.js"
   },
   "dependencies": {
     "@timing71/common": "^0.2.1",
