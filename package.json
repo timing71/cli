@@ -1,0 +1,24 @@
+{
+  "name": "@timing71/cli",
+  "version": "0.1.0",
+  "description": "Timing71 CLI",
+  "main": "src/index.js",
+  "repository": "https://github.com/timing71/cli",
+  "author": "James Muscat <james@timing71.org>",
+  "license": "AGPL-3.0-or-later",
+  "private": false,
+  "type": "module",
+  "homepage": "https://www.timing71.org/",
+  "bin": {
+    "t71": "src/index.js"
+  },
+  "dependencies": {
+    "@timing71/common": "^0.2.1",
+    "commander": "^10.0.0",
+    "web-streams-polyfill": "^3.2.1",
+    "winston": "^3.8.2"
+  },
+  "optionalDependencies": {
+    "@timing71/services": "^0.3.0"
+  }
+}
