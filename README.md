@@ -23,3 +23,11 @@ Usage: `timing71 services`
 
 Displays a list of available service providers. If you haven't installed the
 (private) `@timing71/services` package this is likely to be empty.
+
+### start
+
+Usage: `timing71 start <timing URL>`
+
+Starts a timing service. With no other options specified, data will be
+displayed on stdout. If the URL supplied is not supported by any available
+service provider then an error message is displayed and the program will exit.
