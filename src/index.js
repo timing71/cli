@@ -31,6 +31,7 @@ t71.command('start')
 t71.command('finalise')
   .description('Finalise a recording directory into a Zip file')
   .addArgument(new Argument('<sourceDir>', 'Source directory'))
+  .option('--rm', 'Remove source directory after creating Zip')
   .action(finaliseCommand);
 
 export async function main(args) {

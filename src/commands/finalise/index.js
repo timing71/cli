@@ -6,7 +6,7 @@ import path from 'path';
 import process from 'process';
 import cliProgress from 'cli-progress';
 
-export const finaliseCommand = async (sourceDirectory) => {
+export const finaliseCommand = async (sourceDirectory, options) => {
   if (!fs.existsSync(sourceDirectory)) {
     throw new Error(`Directory ${sourceDirectory} does not exist!`);
   }
@@ -80,7 +80,9 @@ export const finaliseCommand = async (sourceDirectory) => {
 
   await archive.finalize();
 
-  // fs.rmSync(sourceDirectory, { recursive: true, force: true });
+  if (options.rm) {
+    fs.rmSync(sourceDirectory, { recursive: true, force: true });
+  }
 
   console.log(`Created ${dest}`);
 }
