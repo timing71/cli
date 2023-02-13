@@ -4,6 +4,7 @@ import { format } from 'date-fns';
 import fs from 'fs';
 import path from 'path';
 import process from 'process';
+import cliProgress from 'cli-progress';
 
 export const finaliseCommand = async (sourceDirectory) => {
   if (!fs.existsSync(sourceDirectory)) {
@@ -41,6 +42,12 @@ export const finaliseCommand = async (sourceDirectory) => {
 
   let prevState = null;
 
+  const progressBar = new cliProgress.SingleBar({
+    format: 'Finalising frame {value}/{total} [{bar}] {percentage}% (ETA: {eta}s)'
+  });
+
+  progressBar.start(frames.length, 0);
+
   await Promise.all(
     frames.map(
       async (f, idx) => {
@@ -64,9 +71,12 @@ export const finaliseCommand = async (sourceDirectory) => {
         }
 
         prevState = frame;
+        progressBar.increment();
       }
     )
   );
+
+  progressBar.stop();
 
   await archive.finalize();
 
