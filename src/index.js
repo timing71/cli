@@ -3,6 +3,7 @@ import { Argument, Command } from 'commander';
 
 import { rootLogger } from './logger.js';
 
+import { finaliseCommand } from './commands/finalise/index.js';
 import { servicesCommand } from './commands/services/index.js';
 import { startCommand } from './commands/start/index.js';
 
@@ -26,6 +27,11 @@ t71.command('start')
     new Argument('<source>', 'Timing source URL')
    )
    .action(startCommand)
+
+t71.command('finalise')
+  .description('Finalise a recording directory into a Zip file')
+  .addArgument(new Argument('<sourceDir>', 'Source directory'))
+  .action(finaliseCommand);
 
 export async function main(args) {
 
