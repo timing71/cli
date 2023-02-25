@@ -6,6 +6,7 @@ import { rootLogger } from './logger.js';
 import { finaliseCommand } from './commands/finalise/index.js';
 import { servicesCommand } from './commands/services/index.js';
 import { startCommand } from './commands/start/index.js';
+import { analyseCommand } from './commands/analyse/index.js';
 
 const t71 = new Command();
 
@@ -34,6 +35,11 @@ t71.command('finalise')
   .option('--rm', 'Remove source directory after creating Zip')
   .action(finaliseCommand);
 
+t71.command('analyse')
+  .description('Analyse a replay file and generate an analysis file')
+  .addArgument(new Argument('<replayFile>', 'Replay file'))
+  .action(analyseCommand);
+
 export async function main(args) {
 
   try {
@@ -46,4 +52,4 @@ export async function main(args) {
   t71.parse(args);
 }
 
-main(process.argv);
+// main(process.argv);
