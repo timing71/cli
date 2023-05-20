@@ -14,19 +14,19 @@ class WrappedReconnectingWebSocket extends ReconnectingWebSocket {
   // (because we know we're nodejs not browser, we can do so)
   _connect() {
     if (this._connectLock || !this._shouldReconnect) {
-        return;
+      return;
     }
     this._connectLock = true;
 
     const {
-        maxRetries = Infinity,
-        connectionTimeout = 4000,
-        ...otherOptions
+      maxRetries = Infinity,
+      connectionTimeout = 4000,
+      ...otherOptions
     } = this._options;
 
     if (this._retryCount >= maxRetries) {
-        this._debug('max retries reached', this._retryCount, '>=', maxRetries);
-        return;
+      this._debug('max retries reached', this._retryCount, '>=', maxRetries);
+      return;
     }
 
     this._retryCount++;
@@ -35,22 +35,38 @@ class WrappedReconnectingWebSocket extends ReconnectingWebSocket {
     this._removeListeners();
 
     this._wait()
-        .then(() => this._getNextUrl(this._url))
-        .then(url => {
-            // close could be called before creating the ws
-            if (this._closeCalled) {
-                return;
-            }
-            this._ws = new WebSocket(url, otherOptions);
-            if (this._ws) {
-              this._ws.binaryType = this._binaryType;
-            }
-            this._connectLock = false;
-            this._addListeners();
+      .then(() => this._getNextUrl(this._url))
+      .then(url => {
+        // close could be called before creating the ws
+        if (this._closeCalled) {
+          this._connectLock = false;
+          return;
+        }
+        this._ws = new WebSocket(url, otherOptions);
+        if (this._ws) {
+          this._ws.binaryType = this._binaryType;
+        }
+        this._connectLock = false;
+        this._addListeners();
 
-            this._connectTimeout = setTimeout(() => this._handleTimeout(), connectionTimeout);
-        });
-}
+        this._connectTimeout = setTimeout(() => this._handleTimeout(), connectionTimeout);
+      });
+  }
+
+  _disconnect(code = 1000, reason) {
+    this._clearTimeouts();
+    if (!this._ws) {
+      return;
+    }
+    this._removeListeners();
+    try {
+      this._ws.onerror = () => {};
+      this._ws.close(code, reason);
+      //this._handleClose(new CloseEvent(code, reason, this));
+    } catch (error) {
+      // ignore
+    }
+  }
 
 }
 
