@@ -1,5 +1,5 @@
 import '@timing71/common/polyfill';
-import { Argument, Command } from 'commander';
+import { Argument, Command, Option } from 'commander';
 
 import { rootLogger } from './logger.js';
 
@@ -29,6 +29,8 @@ t71.command('start')
   )
   .option('-r, --record', 'Record timing to a directory')
   .option('--no-table', 'Don\'t display timing table')
+  .option('-w, --websocket-server', 'Serve data via websocket')
+  .addOption(new Option('-p, --port <port>', 'Port to run WebSocket server on').default(24771))
   .action(startCommand)
 
 t71.command('finalise')

@@ -1,7 +1,9 @@
 import { Events, mapServiceProvider } from '@timing71/common';
+import { createAnalyser } from '@timing71/common/analysis';
 import { v4 as uuid } from 'uuid';
 import { connectionService } from './connectionService.js';
 import { Recorder } from './record.js';
+import { WebsocketServer } from './server.js';
 
 export const startCommand = (source, options) => {
   const serviceClass = mapServiceProvider(source);
@@ -21,13 +23,24 @@ export const startCommand = (source, options) => {
 
   const recorder = options.record ? new Recorder(myUUID) : null;
 
+  const analysis = createAnalyser(undefined, true);
+  let prevState = {};
+  const server = options.websocketServer ? new WebsocketServer({ analysis, port: options.port }) : null;
+
   if (recorder) {
     console.log(`Recording timing data to ${recorder.outputDirectory}`);
   }
 
+  if (server) {
+    console.log(`Started WebSocket server on port ${server.address.port}`);
+  }
+
   const onStateChange = (state) => {
 
+    analysis.updateState(prevState, state);
+    prevState = { ...state };
     recorder?.addFrame(state);
+    server?.updateState(state);
 
     if (options.table) {
       console.clear();
@@ -43,6 +56,7 @@ export const startCommand = (source, options) => {
 
   const onManifestChange = (manifest) => {
     recorder?.writeManifest(manifest);
+    server?.updateManifest(manifest);
   }
 
   const service = new serviceClass(serviceDef);
