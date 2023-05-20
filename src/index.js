@@ -27,6 +27,8 @@ t71.command('start')
   .addArgument(
     new Argument('<source>', 'Timing source URL')
   )
+  .option('-r, --record', 'Record timing to a directory')
+  .option('--no-table', 'Don\'t display timing table')
   .action(startCommand)
 
 t71.command('finalise')
