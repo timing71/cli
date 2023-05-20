@@ -11,23 +11,23 @@ import { analyseCommand } from './commands/analyse/index.js';
 const t71 = new Command();
 
 t71.name('timing71')
-   .description('Timing71 command-line client')
-   .option('-d, --debug', 'Enable debug logging')
-   .on('option:debug', () => {
+  .description('Timing71 command-line client')
+  .option('-d, --debug', 'Enable debug logging')
+  .on('option:debug', () => {
     rootLogger.level = 'debug';
-   });
+  });
 
 
 t71.command('services')
-   .description('List installed services')
-   .action(servicesCommand)
+  .description('List installed services')
+  .action(servicesCommand)
 
 t71.command('start')
-   .description('Start running a timing service')
-   .addArgument(
+  .description('Start running a timing service')
+  .addArgument(
     new Argument('<source>', 'Timing source URL')
-   )
-   .action(startCommand)
+  )
+  .action(startCommand)
 
 t71.command('finalise')
   .description('Finalise a recording directory into a Zip file')
