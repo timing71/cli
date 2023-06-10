@@ -1,4 +1,4 @@
-import { Events, mapServiceProvider } from '@timing71/common';
+import { Events, Severity, mapServiceProvider } from '@timing71/common';
 import { createAnalyser } from '@timing71/common/analysis';
 import { v4 as uuid } from 'uuid';
 import { connectionService } from './connectionService.js';
@@ -63,6 +63,28 @@ export const startCommand = (source, options) => {
 
   service.on(Events.STATE_CHANGE, onStateChange);
   service.on(Events.MANIFEST_CHANGE, onManifestChange);
+  service.on(Events.SYSTEM_MESSAGE, logSystemMessageToConsole);
 
   service.start(connectionService);
+}
+
+function logSystemMessageToConsole(msg) {
+  let consoleMethod = 'log';
+  switch (msg.severity) {
+    case Severity.DEBUG:
+      consoleMethod = 'debug';
+      break;
+    case Severity.INFO:
+      consoleMethod = 'info';
+      break;
+    case Severity.WARNING:
+      consoleMethod = 'warn';
+      break;
+    case Severity.ERROR:
+      consoleMethod = 'error';
+      break;
+    default:
+      consoleMethod = 'log';
+  }
+  console[consoleMethod](msg.message); // eslint-disable-line no-console
 }
