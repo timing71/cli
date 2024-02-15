@@ -21,7 +21,7 @@ export const startCommand = (source, options) => {
     uuid: myUUID
   }
 
-  const recorder = options.record ? new Recorder(myUUID) : null;
+  let recorder = options.record ? new Recorder(myUUID) : null;
 
   const analysis = createAnalyser(undefined, true);
   let prevState = {};
@@ -59,10 +59,19 @@ export const startCommand = (source, options) => {
     server?.updateManifest(manifest);
   }
 
+  const onSessionChange = (sessionIndex) => {
+    console.info(`Session change #${sessionIndex}`);
+    analysis.reset();
+    if (options.record) {
+      recorder = new Recorder(`${myUUID}_${sessionIndex}`);
+    }
+  }
+
   const service = new serviceClass(serviceDef);
 
   service.on(Events.STATE_CHANGE, onStateChange);
   service.on(Events.MANIFEST_CHANGE, onManifestChange);
+  service.on(Events.SESSION_CHANGE, onSessionChange);
   service.on(Events.SYSTEM_MESSAGE, logSystemMessageToConsole);
 
   service.start(connectionService);
