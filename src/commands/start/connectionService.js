@@ -1,5 +1,7 @@
+import EventSource from 'eventsource';
 import fetch from "cross-fetch";
 import { JSDOM } from 'jsdom';
+import ReconnectingEventSource from "reconnecting-eventsource";
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import WebSocket from 'ws';
 
@@ -93,5 +95,7 @@ export const connectionService = {
     const jsdom = new JSDOM();
     const DOMParser = jsdom.window.DOMParser;
     return new DOMParser();
-  }
+  },
+
+  createEventSource: (url) => new ReconnectingEventSource(url, { eventSourceClass: EventSource })
 };
