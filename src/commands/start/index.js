@@ -64,6 +64,7 @@ export const startCommand = (source, options) => {
     analysis.reset();
     if (options.record) {
       recorder = new Recorder(`${myUUID}_${sessionIndex}`);
+      console.log(`Recording timing data to ${recorder.outputDirectory}`);
     }
   }
 
