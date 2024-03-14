@@ -3,6 +3,7 @@ import fs from 'fs';
 export class Recorder {
   constructor(uuid) {
     this.uuid = uuid;
+    this._startTime = null;
   }
 
   get outputDirectory() {
@@ -18,6 +19,9 @@ export class Recorder {
   addFrame(state) {
     const filename = `0${Math.floor(state.lastUpdated / 1000)}.json`;
     this._writeFile(filename, state);
+    if (!this._startTime && state.lastUpdated) {
+      this._startTime = Math.floor(state.lastUpdated / 1000);
+    }
   }
 
   writeManifest(manifest) {
@@ -25,6 +29,7 @@ export class Recorder {
       'manifest.json',
       {
         ...manifest,
+        startTime: this._startTime || manifest.startTime,
         version: 1
       }
     );
