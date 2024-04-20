@@ -82,12 +82,12 @@ export const connectionService = {
     return text;
   },
 
-  createWebsocket: (url, { autoReconnect=true, ...options }) => {
+  createWebsocket: (url, { autoReconnect=true, protocols=[], ...options }) => {
     if (autoReconnect) {
-      return new WrappedReconnectingWebSocket(url, [], { WebSocket, ...options });
+      return new WrappedReconnectingWebSocket(url, protocols, { WebSocket, ...options });
     }
     else {
-      return new WebSocket(url, options);
+      return new WebSocket(url, protocols, options);
     }
   },
 
