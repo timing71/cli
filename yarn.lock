@@ -43,14 +43,16 @@
     mobx "^6.7.0"
     mobx-state-tree "^5.1.7"
 
-"@timing71/services@^0.8.0":
-  version "0.8.3"
-  resolved "https://npm.pkg.github.com/download/@timing71/services/0.8.3/b60f9e2a535c1a9796a541fc3d96c5e49fd6c6b5#b60f9e2a535c1a9796a541fc3d96c5e49fd6c6b5"
-  integrity sha512-nAIvZs0DSQcHM97UxornaQgbc6yt7wI9FfyQzvmAJJ67OyARfF+XwOnRQABt2m/S45ynw0tzc2m1Bz3TvdOTKg==
+"@timing71/services@^0.9.0":
+  version "0.9.1"
+  resolved "https://npm.pkg.github.com/download/@timing71/services/0.9.1/b7e47de1665cd329d7ebccb60b8e56ec944a0a4e#b7e47de1665cd329d7ebccb60b8e56ec944a0a4e"
+  integrity sha512-2vdpfcPl3TASnEG2+u2BPHNqgmCHdXQUbnK7L0biQ9eXJLJJ78Itjl0m4GVqCvPUd8Qh+Pi2pONP0udM7JaDQg==
   dependencies:
     "@microsoft/signalr" "^7.0.4"
     cookie "^0.5.0"
     ejson "^2.2.3"
+    graphql "^16.8.1"
+    graphql-ws "^5.16.0"
     lodash.throttle "^4.1.1"
     lz-string "^1.4.4"
     mobx "^6.7.0"
@@ -639,6 +641,16 @@ graceful-fs@^4.2.0:
   version "4.2.10"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.10.tgz#147d3a006da4ca3ce14728c7aefc287c367d7a6c"
   integrity sha512-9ByhssR2fPVsNZj478qUUbKfmL0+t5BDVyjShtyZZLiK7ZDAArFFfopyOTj0M05wE2tJPisA4iTnnXl2YoPvOA==
+
+graphql-ws@^5.16.0:
+  version "5.16.0"
+  resolved "https://registry.yarnpkg.com/graphql-ws/-/graphql-ws-5.16.0.tgz#849efe02f384b4332109329be01d74c345842729"
+  integrity sha512-Ju2RCU2dQMgSKtArPbEtsK5gNLnsQyTNIo/T7cZNp96niC1x0KdJNZV0TIoilceBPQwfb5itrGl8pkFeOUMl4A==
+
+graphql@^16.8.1:
+  version "16.8.1"
+  resolved "https://registry.yarnpkg.com/graphql/-/graphql-16.8.1.tgz#1930a965bef1170603702acdb68aedd3f3cf6f07"
+  integrity sha512-59LZHPdGZVh695Ud9lRzPBVTtlX9ZCV150Er2W43ro37wVof0ctenSaskPPjN7lVTIN8mSZt8PHUNKZuNQUuxw==
 
 has-bigints@^1.0.1:
   version "1.0.2"
