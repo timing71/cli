@@ -82,7 +82,7 @@ export const connectionService = {
     return text;
   },
 
-  createWebsocket: (url, { autoReconnect=true, protocols=[], ...options }) => {
+  createWebsocket: (url, { autoReconnect=true, protocols=[], ...options } = {}) => {
     if (autoReconnect) {
       return new WrappedReconnectingWebSocket(url, protocols, { WebSocket, ...options });
     }
