@@ -10,7 +10,7 @@
   "type": "module",
   "homepage": "https://www.timing71.org/",
   "bin": {
-    "timing71": "src/index.js"
+    "timing71": "NODE_EXTRA_CA_CERTS=certs/additionalCerts.pem bin/timing71.js"
   },
   "dependencies": {
     "@timing71/common": "^0.4.0",
@@ -31,5 +31,8 @@
   },
   "optionalDependencies": {
     "@timing71/services": "^0.9.0"
+  },
+  "scripts": {
+    "t71": "NODE_EXTRA_CA_CERTS=certs/additionalCerts.pem bin/timing71.js"
   }
 }
