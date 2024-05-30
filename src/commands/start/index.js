@@ -1,4 +1,4 @@
-import { Events, Severity, mapServiceProvider } from '@timing71/common';
+import { Events, Severity, dasherizeParts, mapServiceProvider, timeWithHours } from '@timing71/common';
 import { createAnalyser } from '@timing71/common/analysis';
 import { v4 as uuid } from 'uuid';
 import { connectionService } from './connectionService.js';
@@ -44,10 +44,33 @@ export const startCommand = (source, options) => {
 
     if (options.table) {
       console.clear();
+
+      const topLine = [
+        state.session?.timeElapsed ? `${timeWithHours(state.session?.timeElapsed)} elapsed` : null,
+        `Flag: ${state.session?.flagState}`,
+        dasherizeParts(state.manifest?.name, state.manifest?.description),
+        state.session?.lapsRemain ?
+          `${state.session.lapsRemain} lap${state.session.lapsRemain === 1 ? '' : 's'} remaining` :
+          state.session?.timeRemain ?
+            `${timeWithHours(state.session?.timeRemain)} remaining` :
+            null
+      ].filter(part => !!part);
+
+      console.log(topLine.join('\t'))
+
       console.table(
         [
           (state.manifest?.colSpec || []).map(m => m[0]),
-          ...(state.cars || [])
+          ...(state.cars || []).map(
+            car => car.map(
+              (value) => {
+                if (Array.isArray(value)) {
+                  return value[0] || '';
+                }
+                return value || '';
+              }
+            )
+          )
         ]
       );
     }
