@@ -39,7 +39,7 @@ export const analyseCommand = (replayFile) => {
       let prevFrame = null;
       replay.forEachFrame(
         (frame, timestamp) => {
-          analyser.updateState(prevFrame, frame, timestamp);
+          analyser.updateState(prevFrame, frame, timestamp * 1000);
           prevFrame = frame;
           progressBar.increment();
         }
