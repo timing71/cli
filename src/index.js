@@ -34,12 +34,14 @@ t71.command('start')
   .action(startCommand)
 
 t71.command('finalise')
+  .alias('finalize')
   .description('Finalise a recording directory into a Zip file')
   .addArgument(new Argument('<sourceDir>', 'Source directory'))
   .option('--rm', 'Remove source directory after creating Zip')
   .action(finaliseCommand);
 
 t71.command('analyse')
+  .alias('analyze')
   .description('Analyse a replay file and generate an analysis file')
   .addArgument(new Argument('<replayFile>', 'Replay file'))
   .action(analyseCommand);
