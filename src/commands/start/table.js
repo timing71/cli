@@ -1,4 +1,6 @@
-import { dasherizeParts, timeWithHours } from '@timing71/common';
+import { dasherizeParts, timeInSeconds, timeWithHours } from '@timing71/common';
+import chalk from 'chalk';
+import columnify from 'columnify';
 
 export const renderTable = (state) => {
   console.clear();
@@ -16,19 +18,65 @@ export const renderTable = (state) => {
 
   console.log(topLine.join('\t'))
 
-  console.table(
-    [
-      (state.manifest?.colSpec || []).map(m => m[0]),
-      ...(state.cars || []).map(
-        car => car.map(
-          (value) => {
-            if (Array.isArray(value)) {
-              return value[0] || '';
-            }
-            return value || '';
-          }
-        )
-      )
-    ]
+  const colSpec = state.manifest?.colSpec || [];
+  const mapper = mapCarToTable(colSpec);
+  const table = columnify(
+    (state.cars || []).map(mapper),
+    {
+      columnSplitter: ' | ',
+      config: {
+        0: {
+          align: 'right'
+        }
+      },
+      headingTransform: (idx) => chalk.bold(idx == 0 ? 'Pos' : colSpec[idx - 1]?.[0] || idx),
+      maxWidth: 24,
+      truncate: true
+    }
   );
+  console.log(table);
+}
+
+const mapCarToTable = (colSpec = []) => (car, idx) => ([
+  chalk.cyan(idx + 1),
+  ...colSpec.map((stat, idx) => mapStatToTable(stat, car[idx]))
+]);
+
+const mapStatToTable = (stat, value) => {
+  if (Array.isArray(value)) {
+
+    const formattedValue = formatValue(value[0], stat[1]);
+
+    if (value[1] == 'sb') {
+      return chalk.magenta(formattedValue);
+    }
+    if (value[1] == 'pb') {
+      return chalk.green(formattedValue);
+    }
+    if (value[1] == 'old') {
+      return chalk.yellow(formattedValue);
+    }
+    return formattedValue;
+  }
+
+  if (stat[0] === 'State') {
+    if (value === 'PIT') {
+      return chalk.red(value);
+    }
+    if (value === 'OUT') {
+      return chalk.yellow(value);
+    }
+    if (value === 'RUN') {
+      return chalk.green(value);
+    }
+  }
+
+  return formatValue(value, stat[1]);
+}
+
+const formatValue = (value, type) => {
+  if (type === 'time' || type === 'laptime') {
+    return timeInSeconds(value, 3);
+  }
+  return value;
 }

@@ -15,7 +15,9 @@
   "dependencies": {
     "@timing71/common": "^0.4.0",
     "archiver": "^5.3.1",
+    "chalk": "^5.4.1",
     "cli-progress": "^3.11.2",
+    "columnify": "^1.6.0",
     "commander": "^10.0.0",
     "cross-fetch": "^3.1.5",
     "date-fns": "^2.29.3",
