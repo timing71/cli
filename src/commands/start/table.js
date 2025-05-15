@@ -20,15 +20,26 @@ export const renderTable = (state) => {
 
   const colSpec = state.manifest?.colSpec || [];
   const mapper = mapCarToTable(colSpec);
+
+  const config = {
+    0: {
+      align: 'right'
+    }
+  };
+
+  colSpec.forEach(
+    (stat, idx) => {
+      if (stat[1] !== 'text' && stat[1] !== 'class') {
+        config[idx + 1] = { align: 'right' }
+      }
+    }
+  )
+
   const table = columnify(
     (state.cars || []).map(mapper),
     {
       columnSplitter: ' | ',
-      config: {
-        0: {
-          align: 'right'
-        }
-      },
+      config,
       headingTransform: (idx) => chalk.bold(idx == 0 ? 'Pos' : colSpec[idx - 1]?.[0] || idx),
       maxWidth: 24,
       truncate: true
