@@ -1,4 +1,4 @@
-import { dasherizeParts, timeInSeconds, timeWithHours } from '@timing71/common';
+import { dayjs, dasherizeParts, timeInSeconds, timeWithHours } from '@timing71/common';
 import chalk from 'chalk';
 import columnify from 'columnify';
 
@@ -17,6 +17,7 @@ export const renderTable = (state) => {
   ].filter(part => !!part);
 
   console.log(topLine.join('\t'))
+  console.log();
 
   const colSpec = state.manifest?.colSpec || [];
   const mapper = mapCarToTable(colSpec);
@@ -46,6 +47,24 @@ export const renderTable = (state) => {
     }
   );
   console.log(table);
+
+  console.log();
+
+  console.log('-------------------------------- Messages --------------------------------');
+  const msgsTable = columnify(
+    state.messages.slice(0, 10).map(m => ({ timestamp: m[0], category: m[1], message: m[2] })),
+    {
+      columnSplitter: '   ',
+      config: {
+        timestamp: {
+          dataTransform: (ts) => chalk.cyan(dayjs(parseInt(ts, 10)).format('HH:mm:ss'))
+        }
+      },
+      showHeaders: false
+    }
+  )
+
+  console.log(msgsTable);
 }
 
 const mapCarToTable = (colSpec = []) => (car, idx) => ([
