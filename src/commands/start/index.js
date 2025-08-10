@@ -38,7 +38,14 @@ export const startCommand = (source, options) => {
 
   const onStateChange = (state) => {
 
-    analysis.updateState(prevState, state);
+    try {
+      analysis.updateState(prevState, state);
+    }
+    catch (e) {
+      console.error(e);
+      console.warn("From state:", state);
+    }
+
     prevState = { ...state };
     recorder?.addFrame(state);
     server?.updateState(state);

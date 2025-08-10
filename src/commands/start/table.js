@@ -77,13 +77,16 @@ const mapStatToTable = (stat, value) => {
 
     const formattedValue = formatValue(value[0], stat[1]);
 
-    if (value[1] == 'sb') {
+    if (value[1] === 'sb-new') {
+      return chalk.bgMagentaBright.white(formattedValue);
+    }
+    if (value[1] === 'sb') {
       return chalk.magenta(formattedValue);
     }
-    if (value[1] == 'pb') {
+    if (value[1] === 'pb') {
       return chalk.green(formattedValue);
     }
-    if (value[1] == 'old') {
+    if (value[1] === 'old') {
       return chalk.yellow(formattedValue);
     }
     return formattedValue;
