@@ -31,6 +31,7 @@ t71.command('start')
   .option('--no-table', 'Don\'t display timing table')
   .option('-w, --websocket-server', 'Serve data via websocket')
   .addOption(new Option('-p, --port <port>', 'Port to run WebSocket server on').default(24771))
+  .option('-P, --parameters [NAME=VALUE...]', 'Parameters to pass to the service', [])
   .action(startCommand)
 
 t71.command('finalise')
@@ -51,8 +52,9 @@ export async function main(args) {
   try {
     await import('@timing71/services');
   }
-  catch {
+  catch (e) {
     // private @timing71/services package is optional
+    console.error(e);
   }
 
   t71.parse(args);

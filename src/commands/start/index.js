@@ -72,6 +72,18 @@ export const startCommand = (source, options) => {
 
   const service = new serviceClass(serviceDef);
 
+  const parameters = {};
+  for (const paramDef of options.parameters) {
+    if (paramDef.indexOf('=') >= 0) {
+      const [name, value] = paramDef.split('=');
+      parameters[name] = value;
+    }
+    else {
+      console.warn('Rejecting parameter', paramDef);
+    }
+  }
+  service.parameters = parameters;
+
   service.on(Events.STATE_CHANGE, onStateChange);
   service.on(Events.MANIFEST_CHANGE, onManifestChange);
   service.on(Events.SESSION_CHANGE, onSessionChange);
