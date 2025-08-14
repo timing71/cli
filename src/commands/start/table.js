@@ -1,13 +1,27 @@
-import { dayjs, dasherizeParts, timeInSeconds, timeWithHours } from '@timing71/common';
+import { dayjs, dasherizeParts, timeInSeconds, timeWithHours, FlagState } from '@timing71/common';
 import chalk from 'chalk';
 import columnify from 'columnify';
+
+const FLAG_COLOURS = {
+  [FlagState.RED]: chalk.bgRed.white,
+  [FlagState.GREEN]: chalk.bgGreen.black,
+  [FlagState.YELLOW]: chalk.yellowBright,
+  [FlagState.FCY]: chalk.bgYellowBright.black,
+  [FlagState.CAUTION]: chalk.bgYellowBright.black,
+  [FlagState.CODE_60]: chalk.bgMagenta.white
+}
+
+const colouriseFlag = (flag) => {
+  const chalkFunc = FLAG_COLOURS[flag] || chalk.white;
+  return chalkFunc(`  ${flag}  `);
+}
 
 export const renderTable = (state) => {
   console.clear();
 
   const topLine = [
     state.session?.timeElapsed ? `${timeWithHours(state.session?.timeElapsed)} elapsed` : null,
-    `Flag: ${state.session?.flagState}`,
+    `Flag: ${colouriseFlag(state.session?.flagState)}`,
     dasherizeParts(state.manifest?.name, state.manifest?.description),
     state.session?.lapsRemain ?
       `${state.session.lapsRemain} lap${state.session.lapsRemain === 1 ? '' : 's'} remaining` :
